@@ -1,0 +1,31 @@
+{
+  "name": "primersprint",
+  "version": "1.0.1",
+  "description": "primer sprint",
+  "main": "usuario.js",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "bootstrap": "^4.3.1",
+    "express": "^4.16.4",
+    "hbs": "^4.0.3",
+    "jquery": "^3.3.1",
+    "mongoose": "^5.4.22",
+    "nodemon": "^1.18.10",
+    "popper.js": "^1.14.7",
+    "yargs": "^13.2.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "team node",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oyeu/primerSprint.git"
+  },
+  "bugs": {
+    "url": "https://github.com/oyeu/primerSprint/issues"
+  },
+  "homepage": "https://github.com/oyeu/primerSprint#readme"
+}

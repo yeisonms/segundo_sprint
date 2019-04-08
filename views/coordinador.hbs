@@ -1,0 +1,29 @@
+{{>headercoordi}}
+
+    <h3>Bienvenido {{nombre}} a la interfaz de {{rol}}</h3>
+
+    <!-- {{{listarCursos}}} -->
+    {{{listarCursosCoordinador}}}
+    <br>
+
+    <h3>Eliminar estudiante de un curso</h3>
+
+    <form action="/eliminaAspiranteCoordinador2" method="post">
+
+      <div class="form-row">
+        <div class="form-group col-md-3">
+          <label for="cedula">Documento del estudiante</label>
+          <input type="number" class="form-control" id="cedula" placeholder="Documento" name="cedula" required   >
+        </div>
+        <div class="form-group col-md-3">
+          <label for="idcurso">Id del curso</label>
+          <input type="number" class="form-control" id="idcurso" placeholder="Id" name="id" required>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <button type="submit" class="btn btn-dark">Eliminar</button>
+      </div>
+    </form>
+
+    <br>
+{{>footer}}

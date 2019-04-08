@@ -1,0 +1,44 @@
+{{>headercoordi}}
+   <div class="text-center">
+    <h2>Registro curso</h2>
+   </div>
+    <div class="container">
+<form action="/registrocurso" method="post">
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="inputPassword4">Nombre</label>
+      <input type="name" class="form-control" id="inputPassword4" placeholder="Nombre del curso" name="nombre" required   >
+    </div>
+    <div class="form-group col-md-6">
+      <label for="inputEmail4">Identificador</label>
+      <input type="number" class="form-control" id="inputEmail4" placeholder="Identificador" name="id" required>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputAddress">Descripcion</label>
+    <input type="text" class="form-control" id="inputAddress" placeholder="Descripcion del curso" name="descripcion" required>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="inputCity">Valor</label>
+      <input type="number" class="form-control" id="inputCity" placeholder="Costo del curso" name="valor" required>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputState">Modalidad</label>
+      <select id="inputState" class="form-control " name="modalidad">
+        <option selected></option>
+        <option>virtual</option>
+           <option>presencial</option>
+      </select>
+    </div>
+    <div class="form-group col-md-2">
+      <label for="inputZip">Intensidad horaria</label>
+      <input type="number" class="form-control" id="inputZip" name="ih" >
+    </div>
+  </div>
+  <div class="text-center">
+  <button type="submit" class="btn btn-primary">registrar curso</button>
+  </div>
+</form>
+</div>
+{{>footer}}

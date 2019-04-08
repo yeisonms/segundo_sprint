@@ -1,0 +1,45 @@
+{{>header}}
+    <h2>
+      Registro usuario
+    </h2>
+
+<div class="d-flex justify-content-center align-items-center container ">  
+   <div class="row"> 
+      <form class="well form-horizontal" action="/registro" method="post">
+                    
+<div class="form-row">
+   
+    <div class="form-group col-md-6">
+      <label for="inputEmail4">Nombre</label>
+     <input type="text" name="nombre" required  placeholder="Nombre" class="form-control" name="nombre">
+    </div>
+     <div class="form-group col-md-6">
+      <label for="inputPassword4">Cedula</label>
+      <input type="name" class="form-control" id="cedula" placeholder="Cedula" name="cedula" required   >
+    </div>
+  </div>
+  <div class="form-row">
+   <div class="form-group col-md-6">
+      <label for="inputEmail4">Telefono</label>
+     <input type="number" name="telefono" required  placeholder="Telefono" class="form-control">
+    </div>
+     <div class="form-group col-md-6">
+      <label for="inputPassword4">Correo electronico</label>
+      <input type="name" class="form-control" id="correo" placeholder="Correo electronico" name="correo" required   >
+    </div>
+  </div>
+
+  <div class="form-row">
+   <div class="form-group col-md-6">     
+      <button class="btn btn-dark">registrarse</button>  
+    </div>
+    <div class="form-group col-md-6">
+      <button type="button" name="Volver al inicio" onclick="location.href='./'" class="btn btn-dark">Volver al inicio
+    </div>
+  </div>
+        </form>
+ 
+      </div>
+  </div>
+
+{{>footer}}

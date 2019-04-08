@@ -1,0 +1,29 @@
+{{>header}}
+    <h2>
+      Ingreso usuario
+    </h2>
+    <p style="color:red;">
+      {{alerta}}
+    </p>
+
+    <form action="/login" method="post">    
+
+ <div class="form-row">
+    <div class="form-group col-md-3">
+      <label for="inputPassword4">Nombre</label>
+      <input type="name" class="form-control" id="inputPassword4" placeholder="Nombre de usuario" name="nombre" required   >
+    </div>
+    <div class="form-group col-md-3">
+      <label for="inputEmail4">Cedula o clave</label>
+      <input type="number" class="form-control" id="cedula" placeholder="clave" name="cedula" required>
+    </div>
+  </div>
+  <div class="col-md-6">
+      <button class="btn btn-dark">Iniciar sesión</button>
+       <button type="button" name="Volver al inicio" onclick="location.href='./'"  class="btn btn-dark">Volver al inicio</button>
+    <button type="button" name="registrarse" onclick="location.href='./registro'" class="btn btn-dark">Registrate!</button>
+  </div>
+    </form>
+<br>
+   
+{{>footer}}
