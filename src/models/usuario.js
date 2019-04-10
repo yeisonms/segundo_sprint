@@ -3,8 +3,41 @@ const fs = require('fs');
 let listadoUsuarios = [];
 // cosas por modificar
 const mongoose = require('mongoose')
+var uniqueValidator = require('mongoose-unique-validator');
 const Schema = mongoose.Schema;
-const crear = (nombre, documento, correo, telefono) => {
+
+const usuarioSchema = Schema({
+    nombre: {
+
+        type: String,
+        require: true
+    },
+    documento: {
+
+        type: Number,
+        require: true
+    },
+
+    password: {
+
+        type: String,
+        require: true
+    },
+    telefono: {
+
+        type: Number
+
+
+    },
+    estado: {
+        type: String
+    }
+});
+usuarioSchema.plugin(uniqueValidator);
+const crearUsuario = mongoose.model('crearUsuario', usuarioSchema);
+
+
+/* const crear = (nombre, documento, correo, telefono) => {
     listar();
     let user = {
         nombre: nombre,
@@ -30,7 +63,7 @@ const crear = (nombre, documento, correo, telefono) => {
             return "Ese numero de cedula ya se encuentra en uso"
         }
     }
-};
+}; */
 
 const listar = () => {
     try {
@@ -59,7 +92,8 @@ const autenticar = (nombre, cedula) => {
 }
 
 module.exports = {
-    crear,
+    crearUsuario,
+    /* crear, */
     autenticar,
     guardar
 }

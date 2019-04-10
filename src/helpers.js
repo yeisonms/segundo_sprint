@@ -2,11 +2,11 @@ const hbs = require('hbs');
 const usuario = require('./models/usuario');
 const curso = require('./models/cursos');
 
-hbs.registerHelper('crearUsuario', usuario.crear);
+hbs.registerHelper('crearUsuario', usuario.crearUsuario);
 hbs.registerHelper('crearCurso', curso.crearcurso);
 
 hbs.registerHelper('listarCursos', (listado) => {
-    console.log(listado)
+
     let texto = `<table class='table table-striped'> 
     <thead class='thead-dark'> 
     <th> Nombre </th> 
