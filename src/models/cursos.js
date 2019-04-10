@@ -1,6 +1,9 @@
-/* const fs = require('fs');
-const usuario = require('./usuario')
+const usuario = require('../usuario')
 const mongoose = require('mongoose')
+var uniqueValidator = require('mongoose-unique-validator');
+
+
+
 const Schema = mongoose.Schema;
 
 const cursoSchema = Schema({
@@ -39,42 +42,12 @@ const cursoSchema = Schema({
         type: String
     }
 });
-
+cursoSchema.plugin(uniqueValidator);
 const crearcurso = mongoose.model('crearcurso', cursoSchema);
-let listadoCursos = [];
-let listadoUsuarios = [];
- const crearcurso = (nombre, id, descripcion, ih, valor, modalidad) => {
-    listar();
-    let curso = {
-        nombre: nombre,
-        id: id,
-        descripcion: descripcion,
-        ih: ih,
-        valor: valor,
-        modalidad: modalidad,
-        estado: 'disponible',
-        matriculados: []
 
-    };
-    if (listadoCursos.length == 0) {
-        listadoCursos.push(curso);
-        console.log(listadoCursos);
-        guardar();
-        return "curso creado con exito"
-    } else {
-        let duplicado = listadoCursos.find(iden => iden.id == curso.id);
-        if (!duplicado) {
-            listadoCursos.push(curso);
-            console.log(listadoCursos);
-            guardar();
-            return "Curso creado con exito"
-        } else {
-            return "Ese numero de id ya se encuentra en uso"
-        }
-    }
-}; 
 
- const listar = () => {
+//////
+const listar = () => {
     try {
         listadoCursos = require('./listadoCursos.json');
     } catch (e) {
@@ -199,14 +172,14 @@ const cambiarEstado = (id) => {
         seleccionado.estado = 'disponible'
     }
     guardar();
-} 
+}
 
- module.exports = {
+
+module.exports = {
     crearcurso,
-   
-        matricularCursoId,
-        eliminarinscrito,
-        eliminarinscritoCoordinador,
-        cambiarEstado 
 
-} */
+    matricularCursoId,
+    eliminarinscrito,
+    eliminarinscritoCoordinador,
+    cambiarEstado
+}
