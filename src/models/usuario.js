@@ -27,10 +27,13 @@ const usuarioSchema = Schema({
 
         type: Number
 
-
     },
     estado: {
         type: String
+    },
+
+    correo: {
+        type:String
     }
 });
 usuarioSchema.plugin(uniqueValidator);

@@ -85,7 +85,7 @@ app.get('/mostrarcurso', (req, res) => {
 /* app.post('/coordinador', (req, res) => {
     res.render('coordinador', {
         nombre: usuariologeado.nombre,
-         rol: usuariologeado.rol, 
+         rol: usuariologeado.rol,
     });
 })  */
 app.post('/matricula', (req, res) => {
@@ -111,7 +111,7 @@ app.post('/registro', (req, res) => {
     let usuario = new Usuario.crearUsuario({
         nombre: req.body.nombre,
         password: bcrypt.hashSync(req.body.password, 10),
-        cedula: parseInt(req.body.cedula),
+        documento: parseInt(req.body.cedula),
         correo: req.body.correo,
         telefono: parseInt(req.body.telefono),
         estado: "aspirante"

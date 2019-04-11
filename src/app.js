@@ -13,19 +13,15 @@ const directoriopublico = path.join(__dirname, '../public');
 const dirNode_modules = path.join(__dirname, '../node_modules')
 
 app.use(express.static(directoriopublico));
-
-
-
 app.use('/css', express.static(dirNode_modules + '/bootstrap/dist/css'));
 app.use('/js', express.static(dirNode_modules + '/jquery/dist'));
 app.use('/js', express.static(dirNode_modules + '/popper.js/dist'));
 app.use('/js', express.static(dirNode_modules + '/bootstrap/dist/js'));
-
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(require('./routes/index'));
 
-mongoose.connect('mongodb://localhost/asignaturas', { useNewUrlParser: true }, (err, resultado) => {
+mongoose.connect('mongodb://localhost:27017/asignaturas', { useNewUrlParser: true }, (err, resultado) => {
     if (err) {
         return console.log(err)
 
