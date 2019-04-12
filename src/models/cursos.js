@@ -1,75 +1,45 @@
 const usuario = require('../usuario')
 const mongoose = require('mongoose')
 var uniqueValidator = require('mongoose-unique-validator');
-
-
-
 const Schema = mongoose.Schema;
 
 const cursoSchema = Schema({
     nombre: {
-
         type: String,
         require: true
     },
     id: {
-
         type: Number,
         require: true
     },
     descripcion: {
-
         type: String,
         require: true
     },
-    ih: {
-
-        type: Number
-
-
-    },
     valor: {
-
-        type: Number,
-        require: true
+      type: Number,
+      require: true
+    },
+    ih: {
+        type: Number
     },
     modalidad: {
-
         type: String
-
     },
     estado: {
         type: String
+    },
+    matriculados: {
+        type:[]
     }
 });
 cursoSchema.plugin(uniqueValidator);
 const crearcurso = mongoose.model('crearcurso', cursoSchema);
 
 
-//////
-const listar = () => {
-    try {
-        listadoCursos = require('./listadoCursos.json');
-    } catch (e) {
-        listadoCursos = [];
-    }
-};
 
-const guardar = () => {
-    let datos = JSON.stringify(listadoCursos);
-    fs.writeFile('./src/listadoCursos.json', datos, (err) => {
-        if (err) throw (err);
-        console.log("Cursos guardados!");
-    })
-};
 
-const guardarUsuarios = () => {
-    let datos = JSON.stringify(listadoUsuarios);
-    fs.writeFile('./src/listadoUsuarios.json', datos, (err) => {
-        if (err) throw (err);
-        console.log("Usuarios guardados");
-    })
-};
+
 
 const matricularCursoId = (id, estudiante) => {
 

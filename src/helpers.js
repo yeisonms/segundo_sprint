@@ -7,16 +7,16 @@ hbs.registerHelper('crearCurso', curso.crearcurso);
 
 hbs.registerHelper('listarCursos', (listado) => {
 
-    let texto = `<table class='table table-striped'> 
-    <thead class='thead-dark'> 
-    <th> Nombre </th> 
-    <th > Id </th> 
-    <th> Descripción </th> 
-    <th> Valor </th> 
-    <th> Modalidad </th> 
-    <th> Intensidad horaria </th> 
-    <th> estado </th> 
-    </thead> 
+    let texto = `<table class='table table-striped'>
+    <thead class='thead-dark'>
+    <th> Nombre </th>
+    <th > Id </th>
+    <th> Descripción </th>
+    <th> Valor </th>
+    <th> Modalidad </th>
+    <th> Intensidad horaria </th>
+    <th> estado </th>
+    </thead>
     <tbody>`;
 
     listado.forEach(cursocre => {
@@ -239,7 +239,6 @@ hbs.registerHelper('selectCursos', () => {
     }
 })
 hbs.registerHelper('miscursos', (aspirante) => {
-    listadoCursos = require('./listadoCursos.json')
     if (!aspirante.listaCursos.length) {
         return "No tienes cursos inscritos"
     } else {

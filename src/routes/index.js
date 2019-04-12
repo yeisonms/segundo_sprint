@@ -21,9 +21,6 @@ app.set('views', dirViews)
 hbs.registerPartials(directoriopartials);
 
 
-
-
-
 var usuariologeado;
 
 app.use(session({
@@ -120,18 +117,12 @@ app.post('/registro', (req, res) => {
         if (err) {
             res.render('registroexitoso', {
                 mostrar: err
-
             })
-
         }
         res.render('registroexitoso', {
-
             mostrar: resultado
         })
     })
-
-
-
 });
 
 app.post('/registrocurso', (req, res) => {
@@ -166,9 +157,7 @@ app.post('/ingresar', (req, res) => {
         console.log(resultados)
         if (err) {
             return console.log(err)
-
         }
-
         if (!resultados) {
             return res.render('ingresar', {
                 mensaje: "Nombre de usuario o cedula incorrectos"
@@ -177,15 +166,9 @@ app.post('/ingresar', (req, res) => {
         if (!bcrypt.compareSync(req.body.password, resultados.password)) {
             return res.render('ingresar', {
                 mensaje: "contraseña no es correcta"
-
             })
-
         } else {
-            req.session.usuario = resultados._id
-                /* res.render('ingresar', {
-                    mensaje: "bienvenido " + resultados.nombre + req.session.usuario
-
-                }) */
+            //req.session.usuario = resultados._id
             usuariologeado = resultados;
             switch (resultados.estado) {
                 case 'aspirante':
@@ -203,11 +186,7 @@ app.post('/ingresar', (req, res) => {
                     break;
             }
         }
-
-
     })
-
-
 })
 
 
