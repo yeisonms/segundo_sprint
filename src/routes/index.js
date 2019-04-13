@@ -8,6 +8,7 @@ const Curso = require('./../models/cursos')
 const Usuario = require('./../models/usuario')
 const bcrypt = require('bcrypt');
 var session = require('express-session')
+var usuariologeado;
 require('../helpers')
 
 const dirViews = path.join(__dirname, '../../views');
@@ -21,7 +22,6 @@ app.set('views', dirViews)
 hbs.registerPartials(directoriopartials);
 
 
-var usuariologeado;
 
 app.use(session({
     secret: 'keyboard cat',
@@ -32,7 +32,6 @@ app.use(session({
 
 app.get('/', (req, res) => {
 
-
     Curso.crearcurso.find().exec((err, respuesta) => {
         if (err) {
             return console.log(err)
@@ -40,6 +39,7 @@ app.get('/', (req, res) => {
         }
         res.render('index', {
             listado: respuesta
+
 
         })
     })
@@ -285,3 +285,4 @@ app.get('*', (req, res) => {
 });
 
 module.exports = app
+console.log(usuariologeado);

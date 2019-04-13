@@ -2,6 +2,7 @@ const hbs = require('hbs');
 const usuario = require('./models/usuario');
 const curso = require('./models/cursos');
 
+
 hbs.registerHelper('crearUsuario', usuario.crearUsuario);
 hbs.registerHelper('crearCurso', curso.crearcurso);
 
@@ -214,29 +215,36 @@ hbs.registerHelper('listarDisponibles', () => {
     }
 })
 hbs.registerHelper('selectCursos', () => {
-    listadoCursos = require('./listadoCursos.json')
-    if (!listadoCursos.length) {
-        return "no hay cursos creados"
-    } else {
+    curso.crearcurso.find({}).exec((err, resultados) => {
+      if (err) {
+        return console.log("no se pudo traer informacion de los cursos");
+      }
+      console.log(resultados);
+      console.log(resultados.length);
+      if (!resultados.length) {
+          return "no hay cursos creados"
+      } else {
 
-        let disponibles = listadoCursos.filter(cursos => cursos.estado === "disponible")
-        if (!disponibles) {
+          let disponibles = resultados.filter(cursos => cursos.estado === "disponible")
+          if (!disponibles) {
             return "Todos los cursos se han cerrado"
-        } else {
+          } else {
+            console.log(disponibles);
             let texto = "<form action='/matricula' method='post'>";
             texto = texto + " <div class='form-row'><div class='form-group col-md-2'><select class='form-control' style='width:200px' name='idcurso' id='idcurso' >";
             texto = texto + "<option value ='-1'>--Seleccione--</option>";
 
             disponibles.forEach(curso => {
-                texto = texto + '<option value=' + curso.id + '>' + curso.id + ' - ' + curso.nombre + '</option>';
+              texto = texto + '<option value='+curso.id+'>'+curso.id+'-'+curso.nombre+'</option>';
 
             })
             texto = texto + '</select></div><div class="form-group col-md-6">' +
-                '<button type="submit" class="btn btn-dark">Registrar</button>' +
-                '</div></div></form>';
+            '<button type="submit" class="btn btn-dark">Registrar</button>' +
+            '</div></div></form>';
             return texto;
+          }
         }
-    }
+    })
 })
 hbs.registerHelper('miscursos', (aspirante) => {
     if (!aspirante.listaCursos.length) {
