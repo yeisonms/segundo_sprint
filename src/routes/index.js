@@ -285,4 +285,3 @@ app.get('*', (req, res) => {
 });
 
 module.exports = app
-console.log(usuariologeado);

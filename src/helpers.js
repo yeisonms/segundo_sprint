@@ -77,46 +77,7 @@ hbs.registerHelper('listarCursos2', (listado) => {
             }
         }
     })
-    /* hbs.registerHelper('listarCursos2', () => {
-        listadoCursos = require('./listadoCursos.json')
-        if (!listadoCursos.length) {
-            return "no hay cursos creados"
-        } else {
-            let disponibles = listadoCursos.filter(cursos => cursos.estado === "disponible")
-            if (!disponibles) {
-                return "Todos los cursos se han cerrado"
-            } else {
-                let texto = "<div class='accordion' id='accordionExample'>";
-                i = 1;
-                disponibles.forEach(curso => {
-                    texto = texto +
-                        `<div class="card">
-            <div class="card-header" id="heading${i}">
-            <h2 class="mb-0">
-            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse${i}" aria-expanded="true" aria-controls="collapse${i}">
-            Nombre: ${curso.nombre} <br>
-            Identificador de curso: ${curso.id} <br>
-            Valor del curso: ${curso.valor} <br>
-            </button>
-            </h2>
-            </div>
 
-            <div id="collapse${i}" class="collapse" aria-labelledby="heading${i}" data-parent="#accordionExample">
-            <div class="card-body">
-            Descripcion del curso:  ${curso.descripcion}<br>
-            La modalidad es: ${curso.modalidad}<br>
-            La intensidad horaria es: ${curso.ih}<br>
-            </div>
-            </div>
-            </div>`
-                    i = i + 1;
-
-                })
-                texto = texto + '</div>';
-                return texto;
-            }
-        }
-    }) */
 hbs.registerHelper('listarCursosCoordinador', () => {
     listadoCursos = require('./listadoCursos.json')
     listadoUsuarios = require('./listadoUsuarios.json')
@@ -215,15 +176,14 @@ hbs.registerHelper('listarDisponibles', () => {
     }
 })
 hbs.registerHelper('selectCursos', () => {
-    curso.crearcurso.find({}).exec((err, resultados) => {
-      if (err) {
-        return console.log("no se pudo traer informacion de los cursos");
-      }
-      console.log(resultados);
-      console.log(resultados.length);
-      if (!resultados.length) {
+  let msg
+      curso.crearcurso.find({}).exec((err, resultados) => {
+        if (err) {
+          return console.log("no se pudo traer informacion de los cursos");
+        }
+        if (!resultados.length) {
           return "no hay cursos creados"
-      } else {
+        } else {
 
           let disponibles = resultados.filter(cursos => cursos.estado === "disponible")
           if (!disponibles) {
@@ -235,17 +195,31 @@ hbs.registerHelper('selectCursos', () => {
             texto = texto + "<option value ='-1'>--Seleccione--</option>";
 
             disponibles.forEach(curso => {
-              texto = texto + '<option value='+curso.id+'>'+curso.id+'-'+curso.nombre+'</option>';
+              texto = texto + '<option value=' + curso.id + '>' + curso.id + ' - ' + curso.nombre + '</option>';
 
             })
             texto = texto + '</select></div><div class="form-group col-md-6">' +
             '<button type="submit" class="btn btn-dark">Registrar</button>' +
             '</div></div></form>';
-            return texto;
+            console.log(texto);
+            msg=texto;
           }
         }
-    })
+      })
+      setTime
+      return msg
 })
+
+
+
+
+
+
+
+
+
+
+
 hbs.registerHelper('miscursos', (aspirante) => {
     if (!aspirante.listaCursos.length) {
         return "No tienes cursos inscritos"
