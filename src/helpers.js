@@ -175,72 +175,53 @@ hbs.registerHelper('listarDisponibles', () => {
         }
     }
 })
-hbs.registerHelper('selectCursos', () => {
-  let msg
-      curso.crearcurso.find({}).exec((err, resultados) => {
-        if (err) {
-          return console.log("no se pudo traer informacion de los cursos");
-        }
-        if (!resultados.length) {
-          return "no hay cursos creados"
-        } else {
 
-          let disponibles = resultados.filter(cursos => cursos.estado === "disponible")
-          if (!disponibles) {
-            return "Todos los cursos se han cerrado"
-          } else {
-            console.log(disponibles);
-            let texto = "<form action='/matricula' method='post'>";
-            texto = texto + " <div class='form-row'><div class='form-group col-md-2'><select class='form-control' style='width:200px' name='idcurso' id='idcurso' >";
-            texto = texto + "<option value ='-1'>--Seleccione--</option>";
 
-            disponibles.forEach(curso => {
-              texto = texto + '<option value=' + curso.id + '>' + curso.id + ' - ' + curso.nombre + '</option>';
+hbs.registerHelper('selectCursos2', (listado) => {
 
-            })
-            texto = texto + '</select></div><div class="form-group col-md-6">' +
-            '<button type="submit" class="btn btn-dark">Registrar</button>' +
-            '</div></div></form>';
-            console.log(texto);
-            msg=texto;
+          if (!listado) {
+            return console.log("no hay cursos creados");
+          }else {
+            let disponibles = listado.filter(cursos => cursos.estado === "disponible")
+            if (!disponibles) {
+              return "Todos los cursos se han cerrado"
+            } else {
+              let texto = "<form action='/matricula' method='post'>";
+              texto = texto + " <div class='form-row'><div class='form-group col-md-2'><select class='form-control' style='width:200px' name='idcurso' id='idcurso' >";
+              texto = texto + "<option value ='-1'>--Seleccione--</option>";
+
+              disponibles.forEach(curso => {
+                texto = texto + '<option value=' + curso.id + '>' + curso.id + ' - ' + curso.nombre + '</option>';
+
+              })
+              texto = texto + '</select></div><div class="form-group col-md-6">' +
+              '<button type="submit" class="btn btn-dark">Registrar</button>' +
+              '</div></div></form>';
+              return texto;
           }
         }
-      })
-      setTime
-      return msg
 })
-
-
-
-
-
-
-
-
-
-
-
-hbs.registerHelper('miscursos', (aspirante) => {
+hbs.registerHelper('miscursos', (aspirante, listado) => {
     if (!aspirante.listaCursos.length) {
         return "No tienes cursos inscritos"
     } else {
 
         let texto = "<form action='/eliminaCursoAspirante' method='post'>" +
             "<table class='table table-striped'> \
-    <thead class='thead-dark'> \
-    <th> Nombre </th> \
-    <th> Id </th> \
-    <th> Descripción </th> \
-    <th> Valor </th> \
-    <th> Modalidad </th> \
-    <th> Intensidad horaria </th> \
-    <th> Estado </th> \
-    <th> Eliminar </th> \
-    </thead> \
-    <tbody>";
+            <thead class='thead-dark'> \
+            <th> Nombre </th> \
+            <th> Id </th> \
+            <th> Descripción </th> \
+            <th> Valor </th> \
+            <th> Modalidad </th> \
+            <th> Intensidad horaria </th> \
+            <th> Estado </th> \
+            <th> Eliminar </th> \
+            </thead> \
+            <tbody>";
 
         aspirante.listaCursos.forEach(id => {
-            let curso = listadoCursos.find(crc => crc.id === id);
+            let curso = listado.find(crc => crc.id === id);
             texto = texto +
                 "<tr>" +
                 "<td>" + curso.nombre + "</td>" +
