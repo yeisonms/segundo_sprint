@@ -201,15 +201,33 @@ app.post('/ingresar', async(req, res) => {
   })
 })
 
-app.post('/eliminaCursoAspirante', (req, res) => {
-  let id = req.body.boton;
-  let texto = curso.eliminarinscrito(id, usuariologeado);
-  console.log(texto);
+app.post('/eliminaCursoAspirante', async(req, res) => {
+  let listaCursos;
+  let mensaje;
+  await Curso.crearcurso.find({}, (err, result)=>{
+    if (err) {
+      console.log("no se pudieron obtener los cursos");
+    }
+    listaCursos = result;
+  })
+  await Curso.crearcurso.findOneAndUpdate({id: req.body.boton},{$pull:{matriculados:usuariologeado.documento}}, (err, result)=>{
+    if (err) {
+      console.log(err);
+    }
+    mensaje="Curso eliminado con exito!";
+  })
+  await Usuario.crearUsuario.findOneAndUpdate({documento:usuariologeado.documento}, {$pull:{listaCursos:parseInt(req.body.boton)}}, {new:true}, (err,resultado)=>{
+    if (err) {
+      return console.log("error");
+    }
+    usuariologeado=resultado;
+  })
   res.render('aspirante', {
     nombre: usuariologeado.nombre,
-    rol: usuariologeado.rol,
-    confirmacion: texto,
-    aspirante: usuariologeado
+    estado: usuariologeado.estado,
+    aspirante: usuariologeado,
+    lista:listaCursos,
+    confirmacion:mensaje
   });
 });
 app.post('/cambioEstado', (req, res) => {
