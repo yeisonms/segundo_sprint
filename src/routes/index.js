@@ -141,7 +141,7 @@ app.post('/coordinador', async(req, res) => {
     rol:usuariologeado.estado,
     listaU:listaUsuarios,
     listaC:listaCursos
-  });        
+  });
 })
 
 app.post('/registrocurso', (req, res) => {
