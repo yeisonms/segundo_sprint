@@ -21,10 +21,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(require('./routes/index'));
 
-mongoose.connect('mongodb://localhost:27017/asignaturas', { useNewUrlParser: true }, (err, resultado) => {
+mongoose.connect(process.env.URLDB, { useNewUrlParser: true }, (err, resultado) => {
     if (err) {
         return console.log(err)
-
     }
     console.log("conectado")
 });
@@ -33,4 +32,3 @@ mongoose.connect('mongodb://localhost:27017/asignaturas', { useNewUrlParser: tru
 app.listen(process.env.PORT, () => {
     console.log('Escuchando en el puerto ' + process.env.PORT);
 });
-//cambio
