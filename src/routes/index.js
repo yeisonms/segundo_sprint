@@ -2,8 +2,6 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const hbs = require('hbs');
-const usuario = require('../usuario');
-const curso = require('../cursos')
 const Curso = require('./../models/cursos')
 const Usuario = require('./../models/usuario')
 const bcrypt = require('bcrypt');
@@ -14,15 +12,9 @@ require('../helpers')
 const dirViews = path.join(__dirname, '../../views');
 const directoriopartials = path.join(__dirname, '../../partials');
 
-
-
-
 app.set('view engine', 'hbs');
 app.set('views', dirViews)
 hbs.registerPartials(directoriopartials);
-
-
-
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
@@ -70,10 +62,6 @@ app.get('/registroexitoso', (req, res) => {
 
 app.get('/registrocurso', (req, res) => {
   res.render('registrocurso', {});
-
-});
-app.get('/coordinador', (req, res) => {
-  res.render('coordinador', {});
 
 });
 app.get('/mostrarcurso', (req, res) => {
@@ -133,6 +121,28 @@ app.post('/registro', (req, res) => {
     })
   })
 });
+app.post('/coordinador', async(req, res) => {
+  let listaCursos;
+  let listaUsuarios;
+  await Curso.crearcurso.find({}, (err, result)=>{
+    if (err) {
+      console.log("no se pudieron obtener los cursos");
+    }
+    listaCursos = result;
+  })
+  await Usuario.crearUsuario.find({}, (err, result)=>{
+    if (err) {
+      console.log("no se pudieron obtener los usuarios");
+    }
+    listaUsuarios = result;
+  })
+  res.render('coordinador', {
+    nombre:usuariologeado.nombre,
+    rol:usuariologeado.estado,
+    listaU:listaUsuarios,
+    listaC:listaCursos
+  });        
+})
 
 app.post('/registrocurso', (req, res) => {
   let cursos = new Curso.crearcurso({
@@ -158,11 +168,18 @@ app.post('/registrocurso', (req, res) => {
 
 app.post('/ingresar', async(req, res) => {
   let listaCursos;
+  let listaUsuarios;
   await Curso.crearcurso.find({}, (err, result)=>{
     if (err) {
       console.log("no se pudieron obtener los cursos");
     }
     listaCursos = result;
+  })
+  await Usuario.crearUsuario.find({}, (err, result)=>{
+    if (err) {
+      console.log("no se pudieron obtener los usuarios");
+    }
+    listaUsuarios = result;
   })
 
   Usuario.crearUsuario.findOne({ nombre: req.body.usuario }, (err, resultados) => {
@@ -191,9 +208,11 @@ app.post('/ingresar', async(req, res) => {
         });
         break;
         case 'coordinador':
-        res.render('registrocurso', {
-          /*   nombre: resultados.nombre,
-          estado: resultados.estado, */
+        res.render('coordinador', {
+          nombre:usuariologeado.nombre,
+          rol:usuariologeado.estado,
+          listaU:listaUsuarios,
+          listaC:listaCursos
         });
         break;
       }
@@ -230,28 +249,38 @@ app.post('/eliminaCursoAspirante', async(req, res) => {
     confirmacion:mensaje
   });
 });
+
 app.post('/cambioEstado', (req, res) => {
-  curso.cambiarEstado(parseInt(req.body.botonCambiar));
-  res.render('coordinador', {
-    nombre: usuariologeado.nombre,
-    rol: usuariologeado.rol
-  });
+
 })
 app.post('/eliminaAspiranteCoordinador', (req, res) => {
-  let id = req.body.botonCoordinador;
-  var array = id.split(";");
-  var idcurso = array[0];
-  var estudiante = array[1];
-  let texto = curso.eliminarinscritoCoordinador(idcurso, estudiante);
-  console.log(texto);
-  res.render('coordinador', {});
+
 });
 
-app.post('/eliminaAspiranteCoordinador2', (req, res) => {
-  let texto = curso.eliminarinscritoCoordinador(req.body.id, req.body.cedula);
+app.post('/eliminaAspiranteCoordinador2', async (req, res) => {
+  let curso;
+  let listaUsuarios;
+  await Curso.crearcurso.findOneAndUpdate({id: parseInt(req.body.id)},{$pull:{matriculados:parseInt(req.body.cedula)}}, {new:true}, (err, result)=>{
+    if (err) {
+      console.log(err);
+    }
+    curso=result;
+  })
+  await Usuario.crearUsuario.findOneAndUpdate({documento:parseInt(req.body.cedula)}, {$pull:{listaCursos:parseInt(req.body.id)}}, {new:true}, (err,resultado)=>{
+    if (err) {
+      return console.log("error");
+    }
+  })
+  await Usuario.crearUsuario.find({}, (err, result)=>{
+    if (err) {
+      console.log("no se pudieron obtener los usuarios");
+    }
+    listaUsuarios = result;
+  })
   res.render('datoscurso', {
-    id: req.body.id,
-    usuario: usuariologeado
+    usuario: usuariologeado,
+    curso:curso,
+    listaU:listaUsuarios
   });
 });
 
