@@ -38,6 +38,10 @@ const cursoSchema = Schema({
     matriculados: {
         type:Array,
         default:[]
+    },
+    docente: {
+        type:Number,
+        default:-1
     }
 });
 cursoSchema.plugin(uniqueValidator);
