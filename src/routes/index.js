@@ -22,6 +22,7 @@ app.use(session({
 
 }))
 
+
 app.get('/', (req, res) => {
 
   Curso.crearcurso.find().exec((err, respuesta) => {
@@ -56,10 +57,6 @@ app.get('/login', (req, res) => {
 app.get('/registro', (req, res) => {
   res.render('registro', {});
 });
-app.get('/registroexitoso', (req, res) => {
-  res.render('registroexitoso', {});
-});
-
 app.get('/registrocurso', (req, res) => {
   res.render('registrocurso', {});
 
@@ -67,6 +64,8 @@ app.get('/registrocurso', (req, res) => {
 app.get('/mostrarcurso', (req, res) => {
   res.render('mostrarcurso', {});
 });
+
+
 app.post('/matricula', async(req, res) => {
   let listaCursos;
   let mensaje;
@@ -94,7 +93,7 @@ app.post('/matricula', async(req, res) => {
   })
   res.render('aspirante', {
     nombre: usuariologeado.nombre,
-    estado: usuariologeado.estado,
+    rol: usuariologeado.rol,
     aspirante: usuariologeado,
     lista:listaCursos,
     confirmacion:mensaje
@@ -107,8 +106,7 @@ app.post('/registro', (req, res) => {
     password: bcrypt.hashSync(req.body.password, 10),
     documento: parseInt(req.body.cedula),
     correo: req.body.correo,
-    telefono: parseInt(req.body.telefono),
-    estado: "aspirante"
+    telefono: parseInt(req.body.telefono)
   })
   usuario.save((err, resultado) => {
     if (err) {
@@ -138,12 +136,11 @@ app.post('/coordinador', async(req, res) => {
   })
   res.render('coordinador', {
     nombre:usuariologeado.nombre,
-    rol:usuariologeado.estado,
+    rol:usuariologeado.rol,
     listaU:listaUsuarios,
     listaC:listaCursos
   });
 })
-
 app.post('/registrocurso', (req, res) => {
   let cursos = new Curso.crearcurso({
     nombre: req.body.nombre,
@@ -151,8 +148,7 @@ app.post('/registrocurso', (req, res) => {
     descripcion: req.body.descripcion,
     valor: parseInt(req.body.valor),
     modalidad: req.body.modalidad,
-    ih: parseInt(req.body.ih),
-    estado: "disponible"
+    ih: parseInt(req.body.ih)
   })
   cursos.save((err, resultado) => {
     if (err) {
@@ -165,7 +161,9 @@ app.post('/registrocurso', (req, res) => {
     })
   })
 });
-
+app.post('/administrar', (req, res)=> {
+  res.render('administrador',{})
+})
 app.post('/ingresar', async(req, res) => {
   let listaCursos;
   let listaUsuarios;
@@ -198,11 +196,11 @@ app.post('/ingresar', async(req, res) => {
     } else {
       //req.session.usuario = resultados._id
       usuariologeado = resultados;
-      switch (resultados.estado) {
+      switch (resultados.rol) {
         case 'aspirante':
         res.render('aspirante', {
           nombre: resultados.nombre,
-          estado: resultados.estado,
+          rol: resultados.rol,
           aspirante: usuariologeado,
           lista:listaCursos
         });
@@ -210,7 +208,7 @@ app.post('/ingresar', async(req, res) => {
         case 'coordinador':
         res.render('coordinador', {
           nombre:usuariologeado.nombre,
-          rol:usuariologeado.estado,
+          rol:usuariologeado.rol,
           listaU:listaUsuarios,
           listaC:listaCursos
         });
@@ -219,7 +217,6 @@ app.post('/ingresar', async(req, res) => {
     }
   })
 })
-
 app.post('/eliminaCursoAspirante', async(req, res) => {
   let listaCursos;
   let mensaje;
@@ -243,20 +240,18 @@ app.post('/eliminaCursoAspirante', async(req, res) => {
   })
   res.render('aspirante', {
     nombre: usuariologeado.nombre,
-    estado: usuariologeado.estado,
+    rol: usuariologeado.rol,
     aspirante: usuariologeado,
     lista:listaCursos,
     confirmacion:mensaje
   });
 });
-
 app.post('/cambioEstado', (req, res) => {
 
 })
 app.post('/eliminaAspiranteCoordinador', (req, res) => {
 
 });
-
 app.post('/eliminaAspiranteCoordinador2', async (req, res) => {
   let curso;
   let listaUsuarios;
@@ -278,7 +273,6 @@ app.post('/eliminaAspiranteCoordinador2', async (req, res) => {
     listaUsuarios = result;
   })
   res.render('datoscurso', {
-    usuario: usuariologeado,
     curso:curso,
     listaU:listaUsuarios
   });

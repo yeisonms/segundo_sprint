@@ -219,3 +219,28 @@ hbs.registerHelper('integrantesCurso', (curso, listadoUsuarios) => {
     texto = texto + '</tbody></table>';
     return texto;
 })
+
+hbs.registerHelper('listarUsuarios', (listadoU)=>{
+  if (!listadoU) {
+    return `<form action="/registro" method="get">
+      <div class="col-md-6">
+        <p>No hay ningun Usuario creado, Ve y crea uno!</p>
+        <button type="submit" class="btn btn-dark">Crear usuario</button>
+      </div>
+    </form>`
+  }else {
+      let texto = "<form action='/actualizarUsuario' method='post'>";
+      texto = texto + " <div class='form-row'><div class='form-group col-md-2'><select class='form-control' style='width:200px' name='documento' id='documento' >";
+      texto = texto + "<option value ='-1'>--Seleccione--</option>";
+
+      listadoU.forEach(usuario => {
+        texto = texto + '<option value=' + usuario.documento + '>' + usuario.nombre + ' - ' + usuario.documento + ' rol: '+ usuario.estado + '</option>';
+
+      })
+      texto = texto + '</select></div><div class="form-group col-md-6">' +
+      '<button type="submit" class="btn btn-dark">Actualizar</button>' +
+      '</div></div></form>';
+      return texto;
+  }
+
+})

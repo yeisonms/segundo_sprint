@@ -5,27 +5,40 @@ const Schema = mongoose.Schema;
 const usuarioSchema = Schema({
     nombre: {
         type: String,
-        require: true
+        require: true,
+        trim:true
     },
     documento: {
         type: Number,
-        require: true
+        require: true,
+        trim:true,
+        min:0,
+        unique:true
     },
     password: {
         type: String,
-        require: true
+        require: true,
+        trim:true
     },
     telefono: {
-        type: Number
+        type: Number,
+        default:0,
+        trim:true,
+        unique:true
     },
-    estado: {
-        type: String
+    rol: {
+        type: String,
+        default:"aspirante"
     },
     correo: {
-        type:String
+        type:String,
+        default:"",
+        trim:true,
+        unique:true
     },
     listaCursos: {
-        type:[]
+        type:Array,
+        default:[]
     }
 });
 usuarioSchema.plugin(uniqueValidator);

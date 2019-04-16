@@ -5,31 +5,39 @@ const Schema = mongoose.Schema;
 const cursoSchema = Schema({
     nombre: {
         type: String,
-        require: true
+        require: true,
+        trim:true
     },
     id: {
         type: Number,
-        require: true
+        require: true,
+        trim:true,
+        unique:true
     },
     descripcion: {
         type: String,
-        require: true
+        require: true,
+        trim:true
     },
     valor: {
       type: Number,
-      require: true
+      require: true,
+      trim:true
     },
     ih: {
-        type: Number
+        type: Number,
+        trim:true
     },
     modalidad: {
         type: String
     },
     estado: {
-        type: String
+        type: String,
+        default:"disponible"
     },
     matriculados: {
-        type:[]
+        type:Array,
+        default:[]
     }
 });
 cursoSchema.plugin(uniqueValidator);
