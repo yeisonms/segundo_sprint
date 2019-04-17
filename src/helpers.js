@@ -40,7 +40,7 @@ hbs.registerHelper('listarCursos', (listado) => {
 hbs.registerHelper('listarCursos2', (listado) => {
 
         if (!listado.length) {
-            return "no hay cursos creados"
+            return "no hay cursos disponibles en el momento"
         } else {
             let disponibles = listado.filter(cursos => cursos.estado === "disponible")
             if (!disponibles) {
@@ -230,17 +230,75 @@ hbs.registerHelper('listarUsuarios', (listadoU)=>{
     </form>`
   }else {
       let texto = "<form action='/actualizarUsuario' method='post'>";
-      texto = texto + " <div class='form-row'><div class='form-group col-md-2'><select class='form-control' style='width:200px' name='documento' id='documento' >";
+      texto = texto + " <div class='form-row'><div class='form-group col-md-4'><select class='form-control' style='width:500px' name='documento' id='documento' >";
       texto = texto + "<option value ='-1'>--Seleccione--</option>";
 
       listadoU.forEach(usuario => {
-        texto = texto + '<option value=' + usuario.documento + '>' + usuario.nombre + ' - ' + usuario.documento + ' rol: '+ usuario.estado + '</option>';
+        texto = texto + '<option value=' + usuario.documento + '>' + usuario.nombre + ' - ' + usuario.documento + ' || rol: '+ usuario.rol + '</option>';
 
       })
       texto = texto + '</select></div><div class="form-group col-md-6">' +
-      '<button type="submit" class="btn btn-dark">Actualizar</button>' +
+      '<button type="submit" class="btn btn-dark">Seleccionar</button>' +
       '</div></div></form>';
       return texto;
   }
 
+})
+
+hbs.registerHelper('mostrarPerfil', (perfil)=>{
+  if (!perfil) {
+    return ""
+  }else {
+    let texto;
+    texto = `<div class="d-flex justify-content-center align-items-center container ">
+              <div class="row">
+                <form class="well form-horizontal" action="/confirmarActualizacion" method="post">
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="nombre">Nombre</label>
+                      <input type="text" name="nombre" id="nombre" required  placeholder="${perfil.nombre}" class="form-control" name="nombre" value="${perfil.nombre}">
+                    </div>
+                    <div class="form-group col-md-6">
+                    <label for="documento">Documento</label>
+                    <input type="number" class="form-control" id="documento" placeholder="${perfil.documento}" name="documento" required value="${perfil.documento}">
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="telefono">Telefono</label>
+                      <input type="number" name="telefono" id="telefono" required  placeholder="${perfil.telefono}" class="form-control" value="${perfil.telefono}">
+                    </div>
+                    <div class="form-group col-md-6">
+                    <label for="correo">Correo electronico</label>
+                    <input type="name" class="form-control" id="correo" placeholder="${perfil.correo}" name="correo" required value="${perfil.correo}">
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="rol">Rol</label>
+                      <select id="rol" class="form-control " name="rol" required>
+                        <option selected></option>
+                        <option>aspirante</option>
+                        <option>docente</option>
+                      </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <h4>El rol actual es: <b>${perfil.rol}</b></h4>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <button class="btn btn-dark">Actualizar</button>
+                    </div>
+                </div>
+              </form>
+              <div class="form-group col-md-6">
+                <form action="/coordinador" method="post">
+                  <button type="submit" class="btn btn-dark" name="usuario">Cancelar</button>
+                </form>
+              </div>
+            </div>
+          </div>`;
+    return texto;
+  }
 })

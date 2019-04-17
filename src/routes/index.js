@@ -162,7 +162,33 @@ app.post('/registrocurso', (req, res) => {
   })
 });
 app.post('/administrar', (req, res)=> {
-  res.render('administrador',{})
+  Usuario.crearUsuario.find({rol:{$in:["aspirante", "docente"]}},{nombre:1, documento:1, rol:1}, (err, resultado)=>{
+    if (err) {
+      console.log("error al consultar base de datos");
+    }
+    res.render('administrador',{
+      listadoU:resultado
+    })
+  })
+})
+app.post('/actualizarUsuario', async(req, res)=>{
+  let doc = req.body.documento;
+  let listadoU;
+  await Usuario.crearUsuario.find({rol:{$in:["aspirante", "docente"]}},{nombre:1, documento:1, rol:1}, (err, resultado)=>{
+    if (err) {
+      console.log("error al consultar base de datos");
+    }
+    listadoU=resultado;
+  })
+  Usuario.crearUsuario.findOne({documento:doc},{nombre:1,documento:1,correo:1,rol:1,telefono:1},(err,resultado)=>{
+    if (err) {
+      console.log(err);
+    }
+    res.render('administrador',{
+      listadoU:listadoU,
+      perfil:resultado
+    })
+  })
 })
 app.post('/ingresar', async(req, res) => {
   let listaCursos;
