@@ -2,10 +2,6 @@ const hbs = require('hbs');
 const usuario = require('./models/usuario');
 const curso = require('./models/cursos');
 
-
-hbs.registerHelper('crearUsuario', usuario.crearUsuario);
-hbs.registerHelper('crearCurso', curso.crearcurso);
-
 hbs.registerHelper('listarCursos', (listado) => {
 
     let texto = `<table class='table table-striped'>
@@ -36,49 +32,46 @@ hbs.registerHelper('listarCursos', (listado) => {
     return texto;
 
 });
-
 hbs.registerHelper('listarCursos2', (listado) => {
 
-        if (!listado.length) {
-            return "no hay cursos disponibles en el momento"
-        } else {
-            let disponibles = listado.filter(cursos => cursos.estado === "disponible")
-            if (!disponibles) {
-                return "Todos los cursos se han cerrado"
-            } else {
-                let texto = "<div class='accordion' id='accordionExample'>";
-                i = 1;
-                disponibles.forEach(curso => {
-                    texto = texto +
-                        `<div class="card">
-        <div class="card-header" id="heading${i}">
-        <h2 class="mb-0">
-        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse${i}" aria-expanded="true" aria-controls="collapse${i}">
-        Nombre: ${curso.nombre} <br>
-        Identificador de curso: ${curso.id} <br>
-        Valor del curso: ${curso.valor} <br>
-        </button>
-        </h2>
-        </div>
+  if (!listado.length) {
+    return "no hay cursos disponibles en el momento";
+  } else {
+    let disponibles = listado.filter(cursos => cursos.estado === "disponible");
+    if (!disponibles) {
+      return "Todos los cursos se han cerrado";
+    } else {
+      let texto = `<div class='accordion' id='accordionExample'>`;
+      i = 1;
+      disponibles.forEach(curso => {
+        texto = texto +
+        `<div class="card">
+          <div class="card-header" id="heading${i}">
+            <h2 class="mb-0">
+            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse${i}" aria-expanded="true" aria-controls="collapse${i}">
+            Nombre: ${curso.nombre} <br>
+            Identificador de curso: ${curso.id} <br>
+            Valor del curso: ${curso.valor} <br>
+            </button>
+            </h2>
+          </div>
 
-        <div id="collapse${i}" class="collapse" aria-labelledby="heading${i}" data-parent="#accordionExample">
-        <div class="card-body">
-        Descripcion del curso:  ${curso.descripcion}<br>
-        La modalidad es: ${curso.modalidad}<br>
-        La intensidad horaria es: ${curso.ih}<br>
-        </div>
-        </div>
-        </div>`
-                    i = i + 1;
-
-                })
-                texto = texto + '</div>';
-                return texto;
-            }
-        }
-    })
-
-hbs.registerHelper('listarCursosCoordinador', (listadoCursos, listadoUsuarios) => {
+          <div id="collapse${i}" class="collapse" aria-labelledby="heading${i}" data-parent="#accordionExample">
+            <div class="card-body">
+              Descripcion del curso:  ${curso.descripcion}<br>
+              La modalidad es: ${curso.modalidad}<br>
+              La intensidad horaria es: ${curso.ih}<br>
+            </div>
+          </div>
+        </div>`;
+        i++;
+      })
+      texto = texto + '</div>';
+      return texto;
+    }
+  }
+})
+hbs.registerHelper('listarCursosCoordinador', (listadoCursos, listadoUsuarios, docentes) => {
     let tablaUsuario =
         i = 1;
     let texto = '';
@@ -119,11 +112,34 @@ hbs.registerHelper('listarCursosCoordinador', (listadoCursos, listadoUsuarios) =
             texto = texto + '</tbody></table></form>';
 
             if (curso.estado === 'disponible') {
-                texto = texto + '<div><form action="/cambioEstado" method="post">' +
-                    '<button type="submit" value=' + curso.id + ' class="btn btn-danger" name="botonCambiar">Cerrar inscripciones</button></form></div>'
+                texto = texto + `<form action="/cerrarCurso" method="post">
+                                  <div class='form-row'>
+                                    <div class='form-group col-md-4'>
+                                      <label for="documentoDocente">Elige un docente!</label>
+                                      <select class='form-control' style='width:400px' name='documentoDocente' id='documentoDocente' required>
+                                        <option selected></option>`;
+                docentes.forEach(doc =>{
+                  texto= texto+ `<option value='${doc.documento}'>Nombre: ${doc.nombre} -- Documento: ${doc.documento}</option>`;
+                })
+
+                texto=texto+ `</select></div><div class='form-group col-md-4'>
+                                              <button type="submit" value='${curso.id}' class="btn btn-danger" name="idCurso">Cerrar inscripciones</button>
+                                              </div>
+                                            </div>
+                                          </form>`;
             } else {
-                texto = texto + '<div><form action="/cambioEstado" method="post">' +
-                    '<button type="submit" value=' + curso.id + ' class="btn btn-danger" name="botonCambiar">Abrir inscripciones</button></form></div>'
+                texto = texto + `<form action="/abrirCurso" method="post">
+                                  <div class='form-row'>
+                                    <div class='form-group col-md-2'>
+                                      <button disabled type="submit" value="${curso.id}" class="btn btn-danger" name="botonAbrir">Abrir inscripciones</button>
+                                    </div>
+                                    <div class='form-group col-md-4'>`
+                let docente=docentes.find(doc => doc.documento === curso.docente);
+                texto = texto +      `<p>Docente: ${docente.nombre} || Documento: ${docente.documento}</p>
+                                    </div>
+                                  </div>
+                                </form>`;
+
             }
             texto = texto + '</div></div></div></div></div>';
             i++;
@@ -132,8 +148,6 @@ hbs.registerHelper('listarCursosCoordinador', (listadoCursos, listadoUsuarios) =
         return texto;
     }
 })
-
-
 hbs.registerHelper('selectCursos2', (listado) => {
 
           if (!listado) {
@@ -162,39 +176,36 @@ hbs.registerHelper('miscursos', (aspirante, listado) => {
     if (!aspirante.listaCursos.length) {
         return "No tienes cursos inscritos"
     } else {
-
-        let texto = "<form action='/eliminaCursoAspirante' method='post'>" +
-            "<table class='table table-striped'> \
-            <thead class='thead-dark'> \
-            <th> Nombre </th> \
-            <th> Id </th> \
-            <th> Descripción </th> \
-            <th> Valor </th> \
-            <th> Modalidad </th> \
-            <th> Intensidad horaria </th> \
-            <th> Estado </th> \
-            <th> Eliminar </th> \
-            </thead> \
-            <tbody>";
-
+        let texto = `<form action='/eliminaCursoAspirante' method='post'>
+                      <table class='table table-striped'>
+                        <thead class='thead-dark'>
+                          <th> Nombre </th>
+                          <th> Id </th>
+                          <th> Descripción </th>
+                          <th> Valor </th>
+                          <th> Modalidad </th>
+                          <th> Intensidad horaria </th>
+                          <th> Estado </th>
+                          <th> Eliminar </th>
+                        </thead>
+                        <tbody>`;
         aspirante.listaCursos.forEach(id => {
             let curso = listado.find(crc => crc.id === id);
-            texto = texto +
-                "<tr>" +
-                "<td>" + curso.nombre + "</td>" +
-                "<td>" + curso.id + "</td>" +
-                "<td>" + curso.descripcion + "</td>" +
-                "<td>" + curso.valor + "</td>" +
-                "<td>" + curso.modalidad + "</td>" +
-                "<td>" + curso.ih + "</td>" +
-                "<td>" + curso.estado + "</td>" +
-                "<td><button type='submit' value='" + curso.id + "' class='btn btn-danger' name='boton'>Eliminar</button></td></tr>";
+            texto = texto + `<tr>
+                              <td>${curso.nombre}</td>
+                              <td>${curso.id}</td>
+                              <td>${curso.descripcion}</td>
+                              <td>${curso.valor}</td>
+                              <td>${curso.modalidad}</td>"
+                              <td>${curso.ih}</td>
+                              <td>${curso.estado}</td>
+                              <td><button type='submit' value='${curso.id}' class='btn btn-danger' name='boton'>Eliminar</button></td>
+                            </tr>`;
         })
-        texto = texto + "</tbody></table></form>";
+        texto = texto + `</tbody></table></form>`;
         return texto;
     }
 })
-
 hbs.registerHelper('integrantesCurso', (curso, listadoUsuarios) => {
     let texto = '<h3>Lista integrantes del curso ' + curso.nombre + '</h3><br>'
     texto = texto + "<table class='table table-striped'> \
@@ -219,7 +230,6 @@ hbs.registerHelper('integrantesCurso', (curso, listadoUsuarios) => {
     texto = texto + '</tbody></table>';
     return texto;
 })
-
 hbs.registerHelper('listarUsuarios', (listadoU)=>{
   if (!listadoU) {
     return `<form action="/registro" method="get">
@@ -244,7 +254,6 @@ hbs.registerHelper('listarUsuarios', (listadoU)=>{
   }
 
 })
-
 hbs.registerHelper('mostrarPerfil', (perfil)=>{
   if (!perfil) {
     return ""
@@ -283,10 +292,14 @@ hbs.registerHelper('mostrarPerfil', (perfil)=>{
                       </select>
                     </div>
                     <div class="form-group col-md-6">
-                      <h4>El rol actual es: <b>${perfil.rol}</b></h4>
+                      <label for="id">Id usuario</label>
+                      <input type="text" class="form-control" id="correo" placeholder="${perfil._id}" name="id" required value="${perfil._id}" readonly >
                     </div>
                   </div>
                   <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <h4>El rol actual es: <b>${perfil.rol}</b></h4>
+                    </div>
                     <div class="form-group col-md-6">
                       <button class="btn btn-dark">Actualizar</button>
                     </div>

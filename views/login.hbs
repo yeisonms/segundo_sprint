@@ -1,29 +1,22 @@
 {{>header}}
-    <h2>
-      Ingreso usuario
-    </h2>
-    <p style="color:red;">
-      {{alerta}}
-    </p>
-
-    <form action="/ingresar" method="post">    
-
- <div class="form-row">
+<h1 style="text-align:center">INGRESO A LA PLATAFORMA</h1>
+<form action="/ingresar" method="post">
+  <div class="form-row">
     <div class="form-group col-md-3">
-      <label for="inputPassword4">Nombre</label>
-      <input type="name" class="form-control" id="inputPassword4" placeholder="Nombre de usuario" name="usuario" required   >
+      <label for="nombre">Nombre</label>
+      <input type="text" class="form-control" id="nombre" placeholder="Nombre de usuario" name="nombre" required   >
     </div>
     <div class="form-group col-md-3">
-      <label for="inputEmail4">Cedula o clave</label>
-      <input type="password" class="form-control" id="password" placeholder="clave" name="password" required>
+      <label for="password">Clave</label>
+      <input type="password" class="form-control" id="password" placeholder="Clave" name="password" required>
     </div>
   </div>
   <div class="col-md-6">
-      <button class="btn btn-dark">Iniciar sesión</button>
-       <button type="button" name="Volver al inicio" onclick="location.href='./'"  class="btn btn-dark">Volver al inicio</button>
-    <button type="button" name="registrarse" onclick="location.href='./registro'" class="btn btn-dark">Registrate!</button>
+    <button class="btn btn-dark">Iniciar sesión</button>
+    <button type="button" name="Volver al inicio" onclick="location.href='./'"  class="btn btn-dark">Volver al inicio</button>
   </div>
-    </form>
+</form>
+  <br>
+  <h2>¿No tienes usuario?... Crea uno <a href="/registro"><b>aqui</b></a></h2>
 <br>
-   
 {{>footer}}
