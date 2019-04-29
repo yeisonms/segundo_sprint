@@ -1,12 +1,17 @@
-{{>headercoordi}}
+{{>header}}
 
-    <h3>Administrador de usuarios</h3>
-    <h4>Selecciona un usuario</h4>
+<h1 style="text-align:center">Administrador de usuarios</h1>
+    <h2>Selecciona un usuario</h2>
 
     {{{listarUsuarios listadoU}}}
 
     <br>
+    <hr>
     {{{mostrarPerfil perfil}}}
-    {{mensaje}}
+    <h3 style="text-align:center; color:red;">{{mensaje}}</h3>
+    <br><hr><br>
+    {{{mostrarRol perfil}}}
+    <h3 style="text-align:center; color:red;">{{mensaje2}}</h3>
+
 
 {{>footer}}

@@ -1,4 +1,4 @@
-{{>headercoordi}}
+{{>header}}
 <div class="text-center">
     <h1>
       Creacion de cursos
@@ -6,14 +6,14 @@
 
 </div>
 <div class="text-center">
-<h2> {{mostrar}}</h2>
-   {{!--  <h2>
-      {{crearCurso nombre id descripcion valor ih modalidad}}
-    </h2>
-    <h3>
-    Los datos del curso son:   nombre: {{nombre}}, descripcion:{{descripcion}}, identificador: {{id}}, intensidad horaria: {{ih}}, valor: {{valor}}, modalidad: {{modalidad}}
-    </h3>
- --}}
+
+  <img src="data: img/png;base64,{{mostrar}}" class="img-fluid">
+
+<h2>nombre : {{infon}}</h2><br>
+<h2>id : {{infoid}}</h2><br>
+<h2>valor : {{infov}}</h2><br>
+<h2>modalidad : {{infom}}</h2><br>
+<h2>descripcion : {{infod}}</h2><br>
 
 </div>
 <form action="/coordinador" method="post">

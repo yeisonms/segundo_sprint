@@ -39,6 +39,9 @@ const cursoSchema = Schema({
         type:Array,
         default:[]
     },
+    info: {
+      type: Buffer,
+    },
     docente: {
         type:Number,
         default:-1

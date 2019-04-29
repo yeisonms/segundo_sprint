@@ -13,21 +13,74 @@
       <img src="img/index.jpg" width="30" height="30" class="d-inline-block align-top" alt="">
       Educacion continua
     </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
+        {{#if sesion}}
+        {{#is rol 'coordinador'}}
         <li class="nav-item active">
-          <a class="nav-link" href="/">Inicio <span class="sr-only">(current)</span></a>
+          <form action="/salir" method="get">
+              <button type="submit" class="btn btn-danger" name="usuario">Cerrar sesión</button>
+          </form>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/registro">Registrate!</a>
+          <form action="/registroC" method="post">
+              <button type="submit" class="btn btn-light">Registrar curso</button>
+          </form>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/login">Ingresar</a>
+          <form action="/cursoscreados" method="post">
+              <button type="submit" class="btn btn-light">Cursos creados</button>
+          </form>
         </li>
-
+        <li class="nav-item">
+        <form action="/administrar" method="post">
+            <button type="submit" class="btn btn-light" name="usuario">Administrar roles</button>
+        </form>
+        </li>
+        <li class="nav-item">
+          <form action="/coordinador" method="post">
+              <button type="submit" class="btn btn-light">Interfaz</button>
+          </form>
+        </li>
       </ul>
-    </div>
-  </nav>
+      {{/is}}
+      {{#is rol 'aspirante'}}
+      <li class="nav-item active">
+        <form action="/salir" method="get">
+            <button type="submit" class="btn btn-danger" name="usuario">Cerrar sesión</button>
+        </form>
+      </li>
+      <li class="nav-item">
+        <form action="/aspirante" method="post">
+            <button type="submit" class="btn btn-light">Interfaz</button>
+        </form>
+      </li>
+    </ul>
+    {{/is}}
+    {{#is rol 'docente'}}
+    <li class="nav-item active">
+      <form action="/salir" method="get">
+          <button type="submit" class="btn btn-danger" name="usuario">Cerrar sesión</button>
+      </form>
+    </li>
+    <li class="nav-item">
+      <form action="/docente" method="post">
+          <button type="submit" class="btn btn-light">Interfaz</button>
+      </form>
+    </li>
+    </ul>
+    {{/is}}
+    {{else}}
+    <li class="nav-item active">
+      <a class="nav-link" href="/">Inicio<span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/registro">Registrate!</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/login">Ingresar</a>
+    </li>
+  </ul>
+  {{/if}}
+</div>
+</nav>
